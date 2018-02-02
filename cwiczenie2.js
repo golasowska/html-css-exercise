@@ -35,6 +35,14 @@ generateRunicWords = length => {
     { rune: 'Zod', power: 19, without: 'Jah' }
   ];
 
+  if (!length) {
+    return console.log('Input cannot be empty');
+  } else if (length < 0 || length > runes.length) {
+    return console.log(
+      'Input should be a number greater than 0 and less than number of runes.'
+    );
+  }
+
   const runicWords = [];
 
   do {
@@ -86,15 +94,51 @@ generateRunicWords = length => {
 
     runicWords.push({ word: word, power: powerSum });
     console.log('runic words result', runicWords);
-  } while (runes.length > length);
+  } while (runes.length > length && runicWords.length < 10);
 
   return runicWords;
 };
 
-// checkRunicWord = runicWord => {
-//   console.log('runic word is ', runicWord);
-//   return runicWordObject;
-// };
+checkRunicWord = runicWord => {
+  const runes = [
+    { rune: 'El', power: 28, without: 'Ort' },
+    { rune: 'Eld', power: 33, without: 'Sur' },
+    { rune: 'Tir', power: 9, without: 'Eth' },
+    { rune: 'Nef', power: 7, without: 'Ist' },
+    { rune: 'Eth', power: 31, without: 'Tir' },
+    { rune: 'Ith', power: 22, without: 'Pul' },
+    { rune: 'Tal', power: 8, without: 'Io' },
+    { rune: 'Ral', power: 25, without: 'Um' },
+    { rune: 'Ort', power: 18, without: 'El' },
+    { rune: 'Thul', power: 13, without: 'Sol' },
+    { rune: 'Amn', power: 6, without: 'Fal' },
+    { rune: 'Sol', power: 10, without: 'Thul' },
+    { rune: 'Shael', power: 17, without: 'Lem' },
+    { rune: 'Dol', power: 11, without: 'Hel' },
+    { rune: 'Hel', power: 12, without: 'Dol' },
+    { rune: 'Io', power: 20, without: 'Tal' },
+    { rune: 'Lum', power: 32, without: 'Gul' },
+    { rune: 'Ko', power: 27, without: 'Mal' },
+    { rune: 'Fal', power: 14, without: 'Amn' },
+    { rune: 'Lem', power: 26, without: 'Shall' },
+    { rune: 'Pul', power: 15, without: 'Ith' },
+    { rune: 'Um', power: 16, without: 'Ral' },
+    { rune: 'Mal', power: 21, without: 'Ko' },
+    { rune: 'Ist', power: 4, without: 'Nef' },
+    { rune: 'Gul', power: 23, without: 'Lum' },
+    { rune: 'Vex', power: 24, without: 'Ohm' },
+    { rune: 'Ohm', power: 1, without: 'Vex' },
+    { rune: 'Lo', power: 2, without: 'Cham' },
+    { rune: 'Sur', power: 30, without: 'Eld' },
+    { rune: 'Ber', power: 3, without: '' },
+    { rune: 'Jah', power: 5, without: 'Zod' },
+    { rune: 'Cham', power: 29, without: 'Lo' },
+    { rune: 'Zod', power: 19, without: 'Jah' }
+  ];
+
+  console.log('runic word is ', runicWord);
+  return runicWord;
+};
 
 generateRunicWords(3);
-// checkRunicWord('word');
+checkRunicWord(generateRunicWords(3)[2].word);
