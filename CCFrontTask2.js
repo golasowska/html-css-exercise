@@ -1,4 +1,4 @@
-generateRunicWords = length => {
+exports.generateRunicWords = length => {
   const runes = [
     { rune: 'El', power: 28, without: 'Ort' },
     { rune: 'Eld', power: 33, without: 'Sur' },
@@ -35,15 +35,20 @@ generateRunicWords = length => {
     { rune: 'Zod', power: 19, without: 'Jah' }
   ];
 
+  // checking if the input (length) is empty or if input is less than 0 oraz greater than the length of runes set (runes)
+
   if (!length) {
-    return console.log('Input cannot be empty');
+    return 'Input can not be empty';
   } else if (length < 0 || length > runes.length) {
-    return console.log(
-      'Input should be a number greater than 0 and less than number of runes.'
-    );
+    return 'Input should be a number greater than 0 and less than number of runes.';
+  } else if (isNaN(length)) {
+    console.log('input should be a number');
+    return 'Input should be a number.';
   }
 
   const runicWords = [];
+
+  //pushing runes to runic words
 
   do {
     let runicWordsArr = [];
@@ -54,8 +59,8 @@ generateRunicWords = length => {
       let max = 0;
       let maxRun = '';
       let without = '';
+      let index = 0;
 
-      index = 0;
       for (let i = 0; i < runes.length; i++) {
         if (runes[i].power > max && withoutArr.indexOf(runes[i].rune) === -1) {
           max = runes[i].power;
@@ -70,16 +75,12 @@ generateRunicWords = length => {
         }
       }
 
-      // console.log('runicWordsArr', runicWordsArr);
-      // console.log('runes', runes);
       withoutArr.push(without);
 
       runicWordsArr.push(maxRun);
       runes.splice(index, 1);
-
-      // console.log('withoutArr', withoutArr);
     }
-    // console.log('runicWordsArr w j', runicWordsArr);
+
     let word = '';
     let powerSum = 0;
     for (let k = 0; k < runicWordsArr.length; k++) {
@@ -92,14 +93,15 @@ generateRunicWords = length => {
       }
     }
 
+    //pushing runic words to array of objects - words are always sorted by power
+
     runicWords.push({ word: word, power: powerSum });
-    // console.log('runic words result', runicWords);
   } while (runes.length > length && runicWords.length < 10);
   console.log('runic words result', runicWords);
   return runicWords;
 };
 
-checkRunicWord = runicWord => {
+exports.checkRunicWord = runicWord => {
   const runes = [
     { rune: 'El', power: 28, without: 'Ort' },
     { rune: 'Eld', power: 33, without: 'Sur' },
@@ -135,32 +137,46 @@ checkRunicWord = runicWord => {
     { rune: 'Cham', power: 29, without: 'Lo' },
     { rune: 'Zod', power: 19, without: 'Jah' }
   ];
+
+  // checking if the input value is empty
+
   if (!runicWord || runicWord.length <= 0) {
-    console.log("The word can't be empty.");
+    // console.log("The word can't be empty.");
     return "The word can't be empty.";
+
+    // checking if the first or last runic word index is '-' sign
   } else if (runicWord[0] === '-' || runicWord[runicWord.length - 1] === '-') {
-    console.log('The word cant start or finish with -');
+    // console.log('The word cant start or finish with -');
     return 'The word cant start or finish with -';
   }
 
-  console.log('runic word is ', runicWord);
+  // creating variables and arrays to check if the runic word is correct
+
   let powerSum = 0;
   let dashArr = [];
   let withoutArr = [];
 
   for (let i = 0; i < runicWord.length; i++) {
-    if (runicWord[i] === '-') dashArr.push(i);
+    if (runicWord[i] === '-') {
+      dashArr.push(i);
+    }
   }
+
   const runicWordArr = runicWord.split('-');
   const runicWordArrCheck = [];
-  console.log('runicWordArr', runicWordArr);
+
+  // checking if the rune is repeated in the runic word
 
   for (let i = 0; i < runicWordArr.length; i++) {
     for (let j = 0; j < runicWordArr.length; j++) {
-      if (i !== j && runicWordArr[i] === runicWordArr[j])
-        console.log('Slowa sie powtarzaja!');
+      if (i !== j && runicWordArr[i] === runicWordArr[j]) {
+        // console.log('Words are repeated!');
+        return 'Words are repeated!';
+      }
     }
   }
+
+  // creating arrays of runes from runic word to check if the word is correct
 
   for (let i = 0; i < runicWordArr.length; i++) {
     for (let j = 0; j < runes.length; j++) {
@@ -170,28 +186,33 @@ checkRunicWord = runicWord => {
       }
     }
   }
-  console.log('runicWordArrCheck', runicWordArrCheck);
-  console.log('withoutArr', withoutArr);
+
+  // checking if the runes from runic word can be in the same runic word
 
   for (let i = 0; i < runicWordArr.length; i++) {
     for (let j = 0; j < runicWordArr.length; j++) {
       if (runicWordArr[i] === withoutArr[j]) {
-        console.log('Slowa nie moga sie znajdowac w jednym wyrazie!');
-        return 'Slowa nie moga sie znajdowac w jednym wyrazie!';
+        // console.log('These runes can not appear together in one word!');
+        return 'These runes can not appear together in one word!';
       }
     }
   }
 
-  if (runicWordArr.length !== runicWordArrCheck.length)
-    console.log('Slowo posiada nieistniejace runy');
-  return 'Slowo posiada nieistniejace runy';
+  // checking if the amount of '-' in the runic word is less than 1 than the length of the runes in the runic word
 
-  if (dashArr.length !== runicWordArr.length - 1) {
-    console.log('Zle slowo');
-    return 'Zle slowo';
+  if (dashArr.length !== runicWordArrCheck.length - 1) {
+    // console.log('Wrong rune word format or the word has no existing runes!');
+    return 'Wrong rune word format or the word has no existing runes!';
   }
 
-  console.log('dashArr', dashArr);
+  // checking if the runes from runic word are in the set of runes ( const runes)
+
+  if (runicWordArr.length !== runicWordArrCheck.length) {
+    // console.log('Wrong rune word format or the word has no existing runes!');
+    return 'Wrong rune word format or the word has no existing runes!';
+  }
+
+  // calculation of the rune word power
 
   for (let j = 0; j < runicWordArr.length; j++) {
     for (let i = 0; i < runes.length; i++) {
@@ -200,11 +221,6 @@ checkRunicWord = runicWord => {
       }
     }
   }
-  console.log('power sum w return', powerSum);
 
   return powerSum;
 };
-
-generateRunicWords(3);
-// checkRunicWord(generateRunicWords(3)[2].word);
-checkRunicWord('Ber-Cham-Lo');
